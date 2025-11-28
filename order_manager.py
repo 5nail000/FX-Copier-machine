@@ -100,10 +100,11 @@ class OrderManager:
             donor_lot=volume,
             mode=self.lot_config.mode,
             value=self.lot_config.value,
-            min_lot=self.lot_config.min_lot,
-            max_lot=self.lot_config.max_lot,
             donor_balance=donor_balance,
-            client_balance=client_balance
+            client_balance=client_balance,
+            symbol_min_lot=symbol_data.get('volume_min'),
+            symbol_max_lot=symbol_data.get('volume_max'),
+            symbol_volume_step=symbol_data.get('volume_step')
         )
         
         # Получаем информацию о символе для определения point
@@ -323,10 +324,11 @@ class OrderManager:
             donor_lot=volume,
             mode=self.lot_config.mode,
             value=self.lot_config.value,
-            min_lot=self.lot_config.min_lot,
-            max_lot=self.lot_config.max_lot,
             donor_balance=donor_balance,
-            client_balance=client_balance
+            client_balance=client_balance,
+            symbol_min_lot=symbol_data.get('volume_min'),
+            symbol_max_lot=symbol_data.get('volume_max'),
+            symbol_volume_step=symbol_data.get('volume_step')
         )
         
         # Подготавливаем запрос на размещение ордера
@@ -418,10 +420,11 @@ class OrderManager:
             donor_lot=volume,
             mode=self.lot_config.mode,
             value=self.lot_config.value,
-            min_lot=self.lot_config.min_lot,
-            max_lot=self.lot_config.max_lot,
             donor_balance=donor_balance,
-            client_balance=client_balance
+            client_balance=client_balance,
+            symbol_min_lot=symbol_data.get('volume_min'),
+            symbol_max_lot=symbol_data.get('volume_max'),
+            symbol_volume_step=symbol_data.get('volume_step')
         )
         
         # Определяем цену в зависимости от типа ордера

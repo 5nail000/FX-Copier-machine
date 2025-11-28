@@ -437,7 +437,10 @@ def client_worker(terminal_path: str, command_queue: Queue, result_queue: Queue,
                             'selected': True,
                             'digits': symbol_info.digits,
                             'point': symbol_info.point,
-                            'trade_mode': symbol_info.trade_mode
+                            'trade_mode': symbol_info.trade_mode,
+                            'volume_min': symbol_info.volume_min,
+                            'volume_max': symbol_info.volume_max,
+                            'volume_step': symbol_info.volume_step
                         }
                     })
                 

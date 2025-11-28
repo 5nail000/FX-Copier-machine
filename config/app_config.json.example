@@ -4,9 +4,7 @@
   },
   "lot_config": {
     "mode": "fixed",
-    "value": 0.01,
-    "min_lot": 0.01,
-    "max_lot": 100.0
+    "value": 0.01
   },
   "order_config": {
     "max_retries": 10,

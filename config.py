@@ -17,9 +17,9 @@ class AccountConfig:
 class LotConfig:
     """Конфигурация размера лота"""
     mode: str  # 'fixed', 'proportion', 'autolot'
-    value: Optional[float] = None  # Для fixed - размер лота, для proportion - коэффициент
-    min_lot: float = 0.01
-    max_lot: float = 100.0
+    value: Optional[float] = None  # Для fixed - размер лота, для proportion - коэффициент, для autolot - множитель
+    # min_lot и max_lot теперь получаются от брокера для каждого символа
+    # Константы по умолчанию определены в utils.py (DEFAULT_MIN_LOT, DEFAULT_MAX_LOT)
 
 
 @dataclass
@@ -63,10 +63,7 @@ class Config:
             self.lot_config.mode = args.lot_mode
         if args.lot_value is not None:
             self.lot_config.value = args.lot_value
-        if args.min_lot is not None:
-            self.lot_config.min_lot = args.min_lot
-        if args.max_lot is not None:
-            self.lot_config.max_lot = args.max_lot
+        # min_lot и max_lot теперь получаются от брокера для каждого символа
         
         # Обновление интервала проверки через аргументы
         if args.check_interval is not None:
@@ -94,9 +91,8 @@ class Config:
             'client_account': {'account_number': 0},
             'lot_config': {
                 'mode': 'fixed',
-                'value': 0.01,
-                'min_lot': 0.01,
-                'max_lot': 100.0
+                'value': 0.01
+                # min_lot и max_lot теперь получаются от брокера для каждого символа
             },
             'order_config': {
                 'max_retries': 50,
@@ -132,9 +128,8 @@ class Config:
         lot_data = config_data.get('lot_config', {})
         lot_config = LotConfig(
             mode=lot_data.get('mode', 'fixed'),
-            value=lot_data.get('value', 0.01),
-            min_lot=lot_data.get('min_lot', 0.01),
-            max_lot=lot_data.get('max_lot', 100.0)
+            value=lot_data.get('value', 0.01)
+            # min_lot и max_lot теперь получаются от брокера для каждого символа
         )
         
         order_data = config_data.get('order_config', {})

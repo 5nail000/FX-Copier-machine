@@ -1975,20 +1975,9 @@ def parse_args():
         '--lot-value',
         type=float,
         default=None,
-        help='Значение для расчета лота (для fixed - размер лота, для proportion - коэффициент). По умолчанию: 0.01'
+        help='Значение для расчета лота (для fixed - размер лота, для proportion - коэффициент, для autolot - множитель). По умолчанию: 0.01'
     )
-    lot_group.add_argument(
-        '--min-lot',
-        type=float,
-        default=None,
-        help='Минимальный размер лота. По умолчанию: 0.01'
-    )
-    lot_group.add_argument(
-        '--max-lot',
-        type=float,
-        default=None,
-        help='Максимальный размер лота. По умолчанию: 100.0'
-    )
+    # min_lot и max_lot теперь получаются от брокера для каждого символа автоматически
     
     # Группа общих настроек
     general_group = parser.add_argument_group('Общие настройки', 'Общие параметры приложения')

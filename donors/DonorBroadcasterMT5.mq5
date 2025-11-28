@@ -7,7 +7,7 @@
 #property version   "1.00"
 #property strict
 
-#include <WinSock2.mqh>
+#include "WinSock2.mqh"
 
 // Параметры
 input int SocketPort = 8888;  // Порт для сокета
@@ -51,12 +51,10 @@ int OnInit()
     
     // Настройка адреса
     sockaddr_in serverAddr;
-    serverAddr.sin_family = AF_INET;
-    serverAddr.sin_addr.s_addr = INADDR_ANY;
-    serverAddr.sin_port = htons(SocketPort);
+    SetSockAddr(serverAddr, INADDR_ANY, SocketPort);
     
     // Привязка сокета
-    if(bind(serverSocket, serverAddr, sizeof(serverAddr)) == SOCKET_ERROR)
+    if(bind(serverSocket, serverAddr, SOCKADDR_IN_SIZE) == SOCKET_ERROR)
     {
         Print("Ошибка привязки сокета: ", WSAGetLastError());
         closesocket(serverSocket);
@@ -109,7 +107,7 @@ void OnTick()
     if(!clientConnected)
     {
         sockaddr_in clientAddr;
-        int addrLen = sizeof(clientAddr);
+        int addrLen = SOCKADDR_IN_SIZE;
         clientSocket = accept(serverSocket, clientAddr, addrLen);
         
         if(clientSocket != INVALID_SOCKET)

@@ -1,9 +1,13 @@
 //+------------------------------------------------------------------+
 //|                                                      WinSock2.mqh |
-//|                        Обертка для работы с WinSock2 в MT4        |
+//|                        Обертка для работы с WinSock2 в MT4/MT5    |
 //+------------------------------------------------------------------+
 #property copyright "FX Copier"
+#ifdef __MQL5__
+// В MQL5 нет #property strict
+#else
 #property strict
+#endif
 
 // Константы WinSock
 #define INVALID_SOCKET          -1

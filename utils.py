@@ -3,6 +3,12 @@
 """
 import MetaTrader5 as mt5
 from typing import Optional, Tuple
+import math
+
+# Константы по умолчанию для размера лота (используются только если брокер не предоставил данные)
+DEFAULT_MIN_LOT = 0.01
+DEFAULT_MAX_LOT = 100.0
+DEFAULT_VOLUME_STEP = 0.01
 
 
 def get_point_size(symbol: str) -> float:
@@ -31,10 +37,11 @@ def calculate_lot_size(
     donor_lot: float,
     mode: str,
     value: Optional[float],
-    min_lot: float,
-    max_lot: float,
     donor_balance: float,
-    client_balance: float
+    client_balance: float,
+    symbol_min_lot: Optional[float] = None,  # Минимальный лот для символа (приоритет)
+    symbol_max_lot: Optional[float] = None,   # Максимальный лот для символа (приоритет)
+    symbol_volume_step: Optional[float] = None  # Шаг изменения лота для символа (приоритет)
 ) -> float:
     """
     Рассчитать размер лота для клиентского ордера
@@ -42,14 +49,20 @@ def calculate_lot_size(
     Args:
         donor_lot: Размер лота донорского ордера
         mode: Режим расчета ('fixed', 'proportion', 'autolot')
-        value: Значение для режима (для fixed - размер, для proportion - коэффициент)
-        min_lot: Минимальный размер лота
-        max_lot: Максимальный размер лота
+        value: Значение для режима (для fixed - размер, для proportion - коэффициент, для autolot - множитель)
         donor_balance: Баланс донорского счета
         client_balance: Баланс клиентского счета
+        symbol_min_lot: Минимальный размер лота для символа (приоритет над константами)
+        symbol_max_lot: Максимальный размер лота для символа (приоритет над константами)
+        symbol_volume_step: Шаг изменения лота для символа (приоритет над константами)
         
     Returns:
         Рассчитанный размер лота
+        
+    Формулы:
+        - fixed: lot = value
+        - proportion: lot = donor_lot * value
+        - autolot: lot = (client_balance / 1000) * value
     """
     if mode == 'fixed':
         lot = value if value is not None else donor_lot
@@ -57,19 +70,29 @@ def calculate_lot_size(
         coefficient = value if value is not None else 1.0
         lot = donor_lot * coefficient
     elif mode == 'autolot':
-        # Автолот на основе соотношения балансов
-        if donor_balance > 0:
-            lot = donor_lot * (client_balance / donor_balance)
-        else:
-            lot = donor_lot
+        # Автолот: lot = (balance/1000) * autoLotValue
+        auto_lot_value = value if value is not None else 1.0
+        lot = (client_balance / 1000) * auto_lot_value
     else:
         lot = donor_lot
     
-    # Ограничение размера лота
-    lot = max(min_lot, min(max_lot, lot))
+    # Используем значения для символа, если они доступны, иначе константы по умолчанию
+    effective_min_lot = symbol_min_lot if symbol_min_lot is not None else DEFAULT_MIN_LOT
+    effective_max_lot = symbol_max_lot if symbol_max_lot is not None else DEFAULT_MAX_LOT
+    effective_volume_step = symbol_volume_step if symbol_volume_step is not None else DEFAULT_VOLUME_STEP
     
-    # Округление до допустимого шага лота (обычно 0.01)
-    lot = round(lot, 2)
+    # Ограничение размера лота
+    lot = max(effective_min_lot, min(effective_max_lot, lot))
+    
+    # Округление до допустимого шага лота символа
+    if effective_volume_step > 0:
+        # Округляем до ближайшего кратного шагу значения
+        lot = round(lot / effective_volume_step) * effective_volume_step
+        # Убеждаемся, что не вышли за границы после округления
+        lot = max(effective_min_lot, min(effective_max_lot, lot))
+    else:
+        # Если шаг не указан, округляем до 2 знаков
+        lot = round(lot, 2)
     
     return lot
 
