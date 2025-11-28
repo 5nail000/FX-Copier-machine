@@ -77,7 +77,7 @@ class Config:
             self.copy_style = args.copy_style
     
     @classmethod
-    def from_json(cls, config_path: str = "app_config.json"):
+    def from_json(cls, config_path: str = "config/app_config.json"):
         """
         Загрузка конфигурации из JSON файла
         
@@ -119,7 +119,7 @@ class Config:
         else:
             config_data = default_config
         
-        # Донорский аккаунт больше не нужен в конфиге (управляется через donors_config.json)
+        # Донорский аккаунт больше не нужен в конфиге (управляется через config/donors_config.json)
         # Но оставляем для обратной совместимости
         donor_account = AccountConfig(
             account_number=config_data.get('donor_account', {}).get('account_number', 0)

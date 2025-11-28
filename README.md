@@ -22,21 +22,21 @@
 pip install -r requirements.txt
 ```
 
-2. Создайте файл `app_config.json` на основе примера `app_config.json.example`:
+2. Создайте файл `config/app_config.json` на основе примера `config/app_config.json.example`:
 ```bash
-cp app_config.json.example app_config.json
+cp config/app_config.json.example config/app_config.json
 ```
 
-3. Отредактируйте `app_config.json`, указав:
+3. Отредактируйте `config/app_config.json`, указав:
    - Номер клиентского аккаунта (только номер!)
    - Настройки размера лота
    - Параметры ордеров
 
-4. (Опционально) Создайте файл `donors_config.json` для настройки доноров (см. `donors_config.json.example`)
+4. (Опционально) Создайте файл `config/donors_config.json` для настройки доноров (см. `config/donors_config.json.example`)
 
 **ВАЖНО:** 
 - Клиентский аккаунт должен быть авторизован в запущенном терминале MT5
-- Донорские аккаунты настраиваются через `donors_config.json` или аргументы командной строки
+- Донорские аккаунты настраиваются через `config/donors_config.json` или аргументы командной строки
 - Скрипт автоматически найдет терминалы, где авторизованы указанные аккаунты
 
 ## Использование
@@ -59,10 +59,10 @@ python main.py
 
 #### Множественные доноры (рекомендуется)
 
-По умолчанию система автоматически пытается загрузить файл `donors_config.json` из корня проекта.
+По умолчанию система автоматически пытается загрузить файл `config/donors_config.json`.
 
 ```bash
-# Автоматическая загрузка donors_config.json из корня
+# Автоматическая загрузка config/donors_config.json
 python main.py
 
 # Указать другой конфигурационный файл
@@ -73,10 +73,10 @@ python main.py --ignore-donor-config --donor-api 12345678
 ```
 
 **Примечание:** 
-- Если файл `donors_config.json` не найден, система выведет информационное сообщение
+- Если файл `config/donors_config.json` не найден, система выведет информационное сообщение
 - Для работы с сокет-донорами необходимо установить и запустить соответствующие EA в терминалах MT4/MT5
 - Подробности см. в `donors/README_DONORS.md`
-- Пример конфигурации: `donors_config.json.example`
+- Пример конфигурации: `config/donors_config.json.example`
 
 #### Быстрый запуск одного донора
 
@@ -201,8 +201,8 @@ python main.py --copy-style by_market --copy-existing-positions --copy-donor-mag
 
 | Опция | Тип | Описание |
 |-------|-----|----------|
-| `--donors-config FILE` | строка | Путь к JSON файлу с конфигурацией доноров (по умолчанию: `donors_config.json` в корне проекта) |
-| `--ignore-donor-config` | флаг | Игнорировать конфигурационный файл `donors_config.json` и использовать только аргументы командной строки |
+| `--donors-config FILE` | строка | Путь к JSON файлу с конфигурацией доноров (по умолчанию: `config/donors_config.json`) |
+| `--ignore-donor-config` | флаг | Игнорировать конфигурационный файл `config/donors_config.json` и использовать только аргументы командной строки |
 | `--donor-api ACCOUNT` | число | Один донор через Python API MT5 (номер аккаунта, система найдет терминал автоматически). Отменяет загрузку конфига |
 | `--donor-socket-mt4 ACCOUNT` | число | Один донор через Socket MT4 (номер аккаунта, подключение к MQL4 EA). Отменяет загрузку конфига |
 | `--donor-socket-mt5 ACCOUNT` | число | Один донор через Socket MT5 (номер аккаунта, подключение к MQL5 EA). Отменяет загрузку конфига |
@@ -222,7 +222,7 @@ python main.py --copy-style by_market --copy-existing-positions --copy-donor-mag
 
 | Опция | Тип | Описание | По умолчанию |
 |-------|-----|----------|--------------|
-| `--client-account ACCOUNT` | число | Номер клиентского аккаунта (переопределяет значение из `app_config.json`) | из конфига |
+| `--client-account ACCOUNT` | число | Номер клиентского аккаунта (переопределяет значение из `config/app_config.json`) | из конфига |
 | `--check-interval SECONDS` | число | Интервал проверки позиций в секундах | `0.05` |
 | `--copy-style STYLE` | строка | Стиль копирования: `by_limits` (лимитные ордера с оптимизацией) или `by_market` (мгновенное открытие/закрытие по маркету) | `by_limits` |
 
@@ -266,13 +266,13 @@ python main.py --donor-api 12345678 --client-account 87654321 --lot-value 0.1 --
 
 ### Режимы расчета лота
 
-Настраиваются в файле `app_config.json` в секции `lot_config` или через аргументы командной строки:
+Настраиваются в файле `config/app_config.json` в секции `lot_config` или через аргументы командной строки:
 
 - **fixed**: Фиксированный размер лота (задается в `lot_config.value` или `--lot-value`)
 - **proportion**: Пропорциональный размер (донорский лот × `lot_config.value` или `--lot-value`)
 - **autolot**: Автоматический расчет на основе соотношения балансов
 
-Пример конфигурации в `app_config.json`:
+Пример конфигурации в `config/app_config.json`:
 ```json
 {
   "lot_config": {
@@ -291,7 +291,7 @@ python main.py --lot-mode fixed --lot-value 0.01 --min-lot 0.01 --max-lot 100.0
 
 ### Параметры ордеров
 
-Все параметры настраиваются в файле `app_config.json` или через аргументы командной строки:
+Все параметры настраиваются в файле `config/app_config.json` или через аргументы командной строки:
 
 - `order_config.max_retries`: Максимальное количество попыток размещения ордера (по умолчанию: 10)
 - `order_config.magic`: Магическое число для идентификации ордеров, открытых копировщиком (по умолчанию: 234000)
@@ -299,7 +299,7 @@ python main.py --lot-mode fixed --lot-value 0.01 --min-lot 0.01 --max-lot 100.0
 - `order_config.copy_sl_tp`: Копировать Stop Loss и Take Profit с донорских позиций (по умолчанию: false)
 - `order_config.copy_pending_orders`: Копировать отложенные ордера с донорского аккаунта (по умолчанию: false)
 
-Пример конфигурации в `app_config.json`:
+Пример конфигурации в `config/app_config.json`:
 ```json
 {
   "order_config": {
@@ -374,7 +374,7 @@ python main.py --lot-mode fixed --lot-value 0.1 --check-interval 0.05
 13. **Копирование существующих позиций**: Используйте опцию `--copy-existing-positions` для копирования уже открытых позиций при запуске программы
 14. **Копирование SL/TP**: Используйте опцию `--copy-sl-tp` для копирования Stop Loss и Take Profit с донорских позиций на клиентские ордера. Работает как для лимитных, так и для рыночных ордеров
 15. **Копирование отложенных ордеров**: Используйте опцию `--copy-pending-orders` для автоматического копирования всех отложенных ордеров (BUY_LIMIT, SELL_LIMIT, BUY_STOP, SELL_STOP и т.д.) с донорского аккаунта. При исполнении ордера система автоматически связывает позиции, предотвращая дублирование. При удалении ордера донора соответствующий клиентский ордер автоматически отменяется
-16. **Множественные доноры**: Система поддерживает работу с несколькими донорами одновременно через разные источники (Python API, Socket MT4, Socket MT5). По умолчанию автоматически загружается файл `donors_config.json` из корня проекта. Опции `--donor-api`, `--donor-socket-mt4`, `--donor-socket-mt5` и `--ignore-donor-config` отменяют загрузку конфига. Подробности см. в `donors/README_DONORS.md`
+16. **Множественные доноры**: Система поддерживает работу с несколькими донорами одновременно через разные источники (Python API, Socket MT4, Socket MT5). По умолчанию автоматически загружается файл `config/donors_config.json`. Опции `--donor-api`, `--donor-socket-mt4`, `--donor-socket-mt5` и `--ignore-donor-config` отменяют загрузку конфига. Подробности см. в `donors/README_DONORS.md`
 17. **Сокет-доноры**: Для работы с донорами через сокет установите и запустите соответствующие EA (`DonorBroadcasterMT4.mq4` или `DonorBroadcasterMT5.mq5`) в терминалах MT4/MT5
 
 ## Остановка

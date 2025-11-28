@@ -58,7 +58,7 @@ class TradeCopier:
         self.donor_balance: float = 0.0
         self.client_balance: float = 0.0
         self.skipped_symbols: Set[str] = set()  # Символы, которые недоступны на клиенте
-        self.state_file = Path("sync_state.json")  # Файл для сохранения состояния
+        self.state_file = Path("config/sync_state.json")  # Файл для сохранения состояния
     
     def _initialize_donors(self):
         """Инициализация доноров из аргументов командной строки"""
@@ -69,8 +69,8 @@ class TradeCopier:
                         self.args.donor_socket_mt4 is not None or 
                         self.args.donor_socket_mt5 is not None)
         
-        # По умолчанию пытаемся загрузить donors_config.json из корня
-        default_config_path = Path("donors_config.json")
+        # По умолчанию пытаемся загрузить donors_config.json из папки config
+        default_config_path = Path("config/donors_config.json")
         
         if not ignore_config:
             # Пытаемся загрузить конфиг из корня или из указанного пути
@@ -121,7 +121,7 @@ class TradeCopier:
         
         # Проверяем, что хотя бы один донор подключен
         if len(self.donor_manager.donors) == 0:
-            self.logger.error("Не указан ни один донор! Создайте файл donors_config.json или используйте --donor-*")
+            self.logger.error("Не указан ни один донор! Создайте файл config/donors_config.json или используйте --donor-*")
     
     def initialize(self) -> bool:
         """Инициализация системы"""
@@ -1889,7 +1889,7 @@ def parse_args():
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
 Примеры использования:
-  # По умолчанию загружается donors_config.json из корня проекта
+    # По умолчанию загружается donors_config.json из папки config
   python main.py
   
   # Указать другой конфигурационный файл
@@ -1916,14 +1916,14 @@ def parse_args():
         '--donors-config',
         type=str,
         metavar='FILE',
-        help='Путь к JSON файлу с конфигурацией доноров (по умолчанию: donors_config.json в корне проекта)'
+        help='Путь к JSON файлу с конфигурацией доноров (по умолчанию: config/donors_config.json)'
     )
     
     donor_group.add_argument(
         '--ignore-donor-config',
         action='store_true',
         default=False,
-        help='Игнорировать конфигурационный файл donors_config.json и использовать только аргументы командной строки'
+        help='Игнорировать конфигурационный файл config/donors_config.json и использовать только аргументы командной строки'
     )
     
     # Простые опции для быстрого запуска одного донора
@@ -1997,7 +1997,7 @@ def parse_args():
         type=int,
         metavar='ACCOUNT',
         default=None,
-        help='Номер клиентского аккаунта (переопределяет значение из app_config.json)'
+        help='Номер клиентского аккаунта (переопределяет значение из config/app_config.json)'
     )
     general_group.add_argument(
         '--check-interval',
@@ -2073,10 +2073,10 @@ def main():
     args = parse_args()
     
     # Загрузка конфигурации из JSON файла
-    config_path = Path("app_config.json")
+    config_path = Path("config/app_config.json")
     if not config_path.exists():
         logger.warning(f"Конфигурационный файл {config_path} не найден. Используются значения по умолчанию.")
-        logger.info(f"Создайте файл {config_path} на основе примера app_config.json.example")
+        logger.info(f"Создайте файл {config_path} на основе примера config/app_config.json.example")
     
     config = Config.from_json(str(config_path))
     

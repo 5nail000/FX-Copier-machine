@@ -166,7 +166,7 @@ EA отправляет данные в формате JSON:
 
 ## Настройка Python клиента
 
-В файле `donors_config.json` добавьте донора типа `socket_mt4`:
+В файле `config/donors_config.json` добавьте донора типа `socket_mt4`:
 
 ```json
 {

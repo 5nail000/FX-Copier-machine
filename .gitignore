@@ -41,10 +41,14 @@ env/
 *.log
 
 # State files
-sync_state.json
+config/sync_state.json
 
 # Commit message file
 commit_message.txt
+
+# Config files (actual configs, not examples)
+config/donors_config.json
+config/app_config.json
 
 # OS
 .DS_Store

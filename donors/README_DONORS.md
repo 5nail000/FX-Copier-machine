@@ -29,9 +29,9 @@
 
 ### 1. Конфигурационный файл (рекомендуется)
 
-По умолчанию система автоматически пытается загрузить файл `donors_config.json` из корня проекта.
+По умолчанию система автоматически пытается загрузить файл `config/donors_config.json`.
 
-Создайте файл `donors_config.json` на основе примера `donors_config.json.example`:
+Создайте файл `config/donors_config.json` на основе примера `config/donors_config.json.example`:
 
 ```json
 {
@@ -64,7 +64,7 @@
 
 Запуск:
 ```bash
-# Автоматическая загрузка donors_config.json из корня
+# Автоматическая загрузка config/donors_config.json
 python main.py
 
 # Или указать другой файл
