@@ -1,0 +1,12 @@
+{
+    "donors": [
+      {
+        "id": "donor_mt4_socket",
+        "type": "socket_mt4",
+        "account_number": 0,
+        "host": "localhost",
+        "port": 7744,
+        "description": "Донор MT4 через сокет на порту 7744"
+      }
+    ]
+  }

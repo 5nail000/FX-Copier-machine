@@ -1,0 +1,43 @@
+{
+  "donors": [
+    {
+      "id": "donor_mt5_api",
+      "type": "python_api",
+      "account_number": 12345678,
+      "description": "Основной донор через Python API MT5"
+    },
+    {
+      "id": "donor_mt5_socket_1",
+      "type": "socket_mt5",
+      "account_number": 87654321,
+      "host": "localhost",
+      "port": 8888,
+      "description": "Первый донор MT5 через сокет"
+    },
+    {
+      "id": "donor_mt5_socket_2",
+      "type": "socket_mt5",
+      "account_number": 11223344,
+      "host": "localhost",
+      "port": 8889,
+      "description": "Второй донор MT5 через сокет"
+    },
+    {
+      "id": "donor_mt5_socket_3",
+      "type": "socket_mt5",
+      "account_number": 55667788,
+      "host": "localhost",
+      "port": 8890,
+      "description": "Третий донор MT5 через сокет"
+    },
+    {
+      "id": "donor_mt4_socket",
+      "type": "socket_mt4",
+      "account_number": 99887766,
+      "host": "localhost",
+      "port": 8891,
+      "description": "Донор MT4 через сокет"
+    }
+  ]
+}
+

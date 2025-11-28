@@ -1,0 +1,32 @@
+# Конфигурация донорского аккаунта (только номер, аккаунт должен быть авторизован в терминале)
+DONOR_ACCOUNT=12345678
+
+# Конфигурация клиентского аккаунта (только номер, аккаунт должен быть авторизован в терминале)
+CLIENT_ACCOUNT=87654321
+
+# Настройки размера лота
+# Режимы: fixed (фиксированный), proportion (пропорция), autolot (автолот по балансу)
+LOT_MODE=fixed
+LOT_VALUE=0.01
+MIN_LOT=0.01
+MAX_LOT=100.0
+
+# Настройки ордеров
+MIN_PRICE_OFFSET=0.0001
+MAX_PRICE_OFFSET=0.0010
+OFFSET_STEP=0.0001
+MAX_RETRIES=10
+MAGIC_NUMBER=234000
+
+# Настройки оптимизации ордеров
+# OPTIMIZE_OPEN_TO_ORIGINAL=true - оптимизировать открывающие ордера к оригинальной цене (по умолчанию)
+# OPTIMIZE_OPEN_TO_ORIGINAL=false - оптимизировать открывающие ордера к текущей рыночной цене
+OPTIMIZE_OPEN_TO_ORIGINAL=true
+
+# OPTIMIZE_CLOSE_TO_MARKET=true - оптимизировать закрывающие ордера к текущей рыночной цене
+# OPTIMIZE_CLOSE_TO_MARKET=false - оптимизировать закрывающие ордера к оригинальной цене закрытия (по умолчанию)
+OPTIMIZE_CLOSE_TO_MARKET=false
+
+# Интервал проверки позиций (в секундах)
+CHECK_INTERVAL=1.0
+
